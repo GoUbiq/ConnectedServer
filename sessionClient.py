@@ -18,16 +18,16 @@ class DefaultNamespace(BaseNamespace, BroadcastMixin):
     '''
 
     def on_connect(self, data):
-        print 'DefaultNamespace: on_connect'
+        print 'DefaultNamespace: on_connect' + data
 
-    def on_register(self, packet):
-        print 'DefaultNamespace: on_register'
+    def on_register(self, data):
+        print 'DefaultNamespace: on_register' + data
 
     def on_transfer(self, packet):
-        print 'DefaultNamespace: on_transfer'
+        print 'DefaultNamespace: on_transfer' + data
 
     def recv_message(self, data):
-        print 'DefaultNamespace: recv_message'
+        print 'DefaultNamespace: recv_message' + data
 
     def recv_error(self, packet):
         print 'error'
