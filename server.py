@@ -23,15 +23,28 @@ class ConnectedServerHandler(BaseHTTPServer.BaseHTTPRequestHandler):
            request.wfile.write("</body></html>")
 
         elif request.path == "/connectTV":
+            i = 0
+            while i < 1000:
+                print request.date_time_string()
             print "connectTV"
             post = {'user': 'sumit', 'device':'TV', 'request': 'connectTV'};
             connected.insert(post)
-
 
         elif request.path == "/connectLaptop":
             print "connectLaptop"
             post = {'user': 'sumit', 'device':'Laptop', 'request': 'connectLaptop'};
             connected.insert(post)
+
+        elif request.path == "/connectPhone":
+            print "connectLaptop"
+            post = {'user': 'sumit', 'device':'Phone', 'request': 'connectPhone'};
+            connected.insert(post)
+
+        elif request.path == "/connectTablet":
+            print "connectLaptop"
+            post = {'user': 'sumit', 'device':'Tablet', 'request': 'connectTablet'};
+            connected.insert(post)
+
 
         elif request.path == "/registerTV":
             print "registerTV"
@@ -42,11 +55,22 @@ class ConnectedServerHandler(BaseHTTPServer.BaseHTTPRequestHandler):
             query = {'user': 'sumit'}
             connected_devices = connected.find(query)
             for d in connected_devices:
-                print d
+                print d['device']
 
         elif request.path == "/getDevices":
             print "getDevices"
 
+        elif request.path == "/disconnectTV":
+            connected.remove({'device' : 'TV'})
+
+        elif request.path == "/disconnectLaptop":
+            connected.remove({'device' : 'Laptop'})
+
+        elif request.path == "/disconnectTab":
+            connected.remove({'device' : 'Tab'})
+
+        elif request.path == "/disconnectPhone":
+            connected.remove({'device' : 'Phone'})
 
         else:
             print "Unknown Path"
