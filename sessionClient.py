@@ -3,11 +3,11 @@ from socketio.server import SocketIOServer
 from socketio.namespace import BaseNamespace
 from socketio.mixins import RoomsMixin, BroadcastMixin
 
-mongoClient = MongoClient()
-connected_db = mongoClient['connected_db']
+#mongoClient = MongoClient()
+#connected_db = mongoClient['connected_db']
 
-devices = connected_db.devices
-connected = connected_db.connected
+#devices = connected_db.devices
+#connected = connected_db.connected
 
 class DefaultNamespace(BaseNamespace, BroadcastMixin):
 
@@ -26,14 +26,11 @@ class DefaultNamespace(BaseNamespace, BroadcastMixin):
     def on_transfer(self, packet):
         print 'DefaultNamespace: on_transfer'
 
-
     def recv_message(self, data):
         print 'DefaultNamespace: recv_message'
 
     def recv_error(self, packet):
         print 'error'
-
-    def  
 
 
 
