@@ -1,8 +1,8 @@
 var io = require('socket.io-client');
 
-var socket = io.in('connect').connect('http://localhost:8000');
+var socket = io.connect('http://54.201.0.33:8000');
 
-socket.emit('vent', 'buzz');
+socket.emit('connect', 'buzz');
 
 
 

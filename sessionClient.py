@@ -18,7 +18,15 @@ class DefaultNamespace(BaseNamespace, BroadcastMixin):
     '''
 
     def on_connect(self, data):
-        print 'DefaultNamespace: on_connect' + data
+        print 'DefaultNamespace: on_connect ' + data
+        if data == 'tv':
+            print 'Connecting TV to session'
+        elif data == 'laptop':
+            print 'Connecting laptop to session'
+        elif data == 'tab':
+            print 'Connecting tab to session'
+        elif data == 'phone':
+            print 'Connecting phone '
 
     def on_register(self, data):
         print 'DefaultNamespace: on_register' + data
@@ -70,7 +78,7 @@ nsmap = {'/connect': ConnectNamespace, '' : DefaultNamespace}
 
 def run():
     print 'Starting Server'
-    server = SocketIOServer(('127.0.0.1', 8000), SessionClient(),
+    server = SocketIOServer(('0.0.0.0', 8000), SessionClient(),
         resource="socket.io", policy_server=True,
         policy_listener=('0.0.0.0', 10843))
     server.serve_forever()
