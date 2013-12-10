@@ -3,7 +3,7 @@ from socketio.server import SocketIOServer
 from socketio.namespace import BaseNamespace
 from socketio.mixins import RoomsMixin, BroadcastMixin
 from pymongo import MongoClient
-from namespaces import ConnectNamespace, TransferNamespace, DefaultNamespace, RegisterNamespace
+from namespaces import ConnectNamespace, DefaultNamespace, RegisterNamespace, AppNamespace
 
 mongoClient = MongoClient()
 connected_db = mongoClient['connected_db']
@@ -29,7 +29,7 @@ def not_found(start_response):
     start_response('404 Not Found', [])
     return ['<h1>Not Found</h1>']
 
-nsmap = {'/connect': ConnectNamespace, '' : DefaultNamespace, '/transfer' : TransferNamespace, '/register' : RegisterNamespace}
+nsmap = {'/connect': ConnectNamespace, '' : DefaultNamespace, '/register' : RegisterNamespace, '/app' : AppNamespace}
 
 def run():
     print 'Starting Server'

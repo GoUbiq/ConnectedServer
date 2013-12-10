@@ -63,6 +63,9 @@ Connect namespace
 '''
 
 class ConnectNamespace(BaseNamespace, BroadcastMixin, RoomsMixin):
+
+    list_of_apps = []
+
     def recv_connect(self):
         print 'ConnectNamespace: recv_connect'
 
@@ -89,8 +92,13 @@ class ConnectNamespace(BaseNamespace, BroadcastMixin, RoomsMixin):
             return
 
         print 'Connecting ' + device
-        post = {'user':  user, 'device': device};
-        connected.insert(post)
+        post = {'user':  user, 'device': device}
+
+        does_exist = connected.find(post)
+        if does_exist == None:
+            connected.insert(post)
+        else:
+            print 'Already exists'
 
         self.join(user)
 
@@ -130,7 +138,15 @@ class ConnectNamespace(BaseNamespace, BroadcastMixin, RoomsMixin):
         '''
             Find all  connected devices for the user
         '''
+        print 'ConnectNamespace: on_connected_devices '
+        list_of_devices = []
+        for device in connected.find():
+            user = device['user']
+            dev = device['device']
+            user_info = { 'user' : user, 'device' : dev}
+            list_of_devices.append(user_info)
 
+        self.emit('respond_connected_devices', list_of_devices)
 
 
     def on_send_message(self, data):
@@ -162,23 +178,66 @@ class ConnectNamespace(BaseNamespace, BroadcastMixin, RoomsMixin):
         self.join(user)
         self.emit_to_room(user, 'transfer', message)
 
-    def on_connect_app(self, data):
-            print 'ConnectNamespace: '
+        #if app hasn't started start app
+        #connect app to all 
+        #Start an Application object and store it in user namespace
+
+class AppNamespace(BaseNamespace, BroadcastMixin, RoomsMixin):
+    """
+        docstring for AppNamespace
+    """
+        
+    def __app_info(data):
+        app_name = data['app_name']
+        app_id = data['app_id']
 
 
-
-
-class  TransferNamespace(BaseNamespace, BroadcastMixin):
-    """docstring for  TransferNamespace"""
-    
     def recv_connect(self):
-        print 'TransferNamespace: recv_connect'
+        print 'AppNamespace: recv_connect'
 
     def initialize(self):
-        print 'TransferNamespace: initialize'
+        print 'AppNamespace: initialize'
+        self.list_of_apps = []
+        self.ubiq_app = UbiqVideo()
+        self.list_of_apps.append(self.ubiq_app)
+        #list of accepted apps?
 
-    def on_transfer():
-        print 'TransferNamespace: on_transfer'
+    def on_app_info(data):
+        print 'AppNamespace: Application Info'
+
+    def on_register_app(self, data):
+        app_name = data['app_name']
+        app_id = data['app_id']
+        app_description = data['app_description']
+
+
+    def on_connect_app(self, data):
+        print 'AppNamespace: on_connect_app'
+
+
+    def on_app_start(self, data):
+        print 'AppNamespace: on_start_app'
+        #check app credentials
+
+        params = data['params']
+        self.ubiq_app.start(params, self)
+
+    def on_app_action(self, data):
+        #print 'AppNamespace: on_update_app'
+        #check app credentials
+        #Get App id and figure out the app
+
+        params = data['params']
+        self.ubiq_app.action(params)
+
+    def on_app_stop(self, data):
+        print 'AppNamespace: on_stop_app'
+
+        params = data['params']
+        self.ubiq_app.stop(params)
+
+
+
 
 
 class RegisterNamespace(BaseNamespace, BroadcastMixin):
@@ -220,7 +279,8 @@ class RegisterNamespace(BaseNamespace, BroadcastMixin):
 
         #WHY NOTIFY DEVICES?
 
-        #self.emit('new_device', device)
+        self.emit('new_device', device)
+
 
     def on_registered_devices(self, data):
         print 'RegisterNamespace: on_registered_devices'
