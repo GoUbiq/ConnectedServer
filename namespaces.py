@@ -3,11 +3,11 @@ from socketio.mixins import RoomsMixin, BroadcastMixin
 from pymongo import MongoClient
 from ubiq_video import UbiqVideo
 
-mongoClient = MongoClient()
-connected_db = mongoClient['connected_db']
+#mongoClient = MongoClient()
+#connected_db = mongoClient['connected_db']
 
-devices = connected_db.devices
-connected = connected_db.connected
+#devices = connected_db.devices
+#connected = connected_db.connected
 
 class DefaultNamespace(BaseNamespace, BroadcastMixin, RoomsMixin):
 
@@ -23,11 +23,11 @@ class DefaultNamespace(BaseNamespace, BroadcastMixin, RoomsMixin):
         if data == 'tv':
             print 'Connecting TV to session'
             post = {'user': 'sumit', 'device':'TV'};
-            connected.insert(post)
+            #connected.insert(post)
         elif data == 'laptop':
             print 'Connecting laptop to session'
             post = {'user': 'sumit', 'device':'TV'};
-            connected.insert(post)
+            #connected.insert(post)
         elif data == 'tab':
             print 'Connecting tab to session'
         elif data == 'phone':
