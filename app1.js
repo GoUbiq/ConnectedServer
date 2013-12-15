@@ -1,6 +1,6 @@
 var io = require('socket.io-client');
 
-var socket = io.connect('ws://192.168.0.102:8000');
+var socket = io.connect('ws://localhost:8000');
 
 socket.of('/app').emit( 'app_start', {'params' : { 'app_id' : '12345', 'app_name' : 'Ubiq Video' }});
 
@@ -10,4 +10,6 @@ setInterval(function() {
 	console.log(time);
 	socket.of('/app').emit( 'app_action', {'params' : { 'app_id' : '12345', 'app_name' : 'Ubiq Video', 'request' : 'video_time', 'time' : time.toString() }});
 }, 1000);
+
+
 

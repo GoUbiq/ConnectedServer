@@ -41,6 +41,7 @@ class UbiqVideo():
 		#print data
 
 		self.current_time = data['time']
+		self.devices.emit_to_room('sumit' , 'video_data', self.current_time)
 
 		print self.current_time
 
@@ -52,7 +53,7 @@ class UbiqVideo():
 		play_url = data['url']
 
 		message = play_url + " is playing"
-		self.devices.emit_to_room('sumit' , 'new_connection', message)
+		self.devices.emit_to_room('sumit' , 'video_data', message)
 		"""
 		
 		play_target = data ['target']
@@ -77,7 +78,10 @@ class UbiqVideo():
 		self.devices = devices 
 
 		#Initialize 
-		devices.join('sumit')
+
+		message = 'New device has joined'
+		self.devices.join('sumit')
+		self.devices.emit_to_room('sumit' , 'new_connection', message)
 
 	def stop(self, request):
 		#Initialize app variables
